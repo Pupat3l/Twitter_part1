@@ -11,7 +11,7 @@ import UIKit
 class HomeTableViewController: UITableViewController {
 
     var tweetArray = [NSDictionary]()
-    var numberOfTweets = Int.self
+    var numberOfTweets: Int!
     
     let myRefreshControl = UIRefreshControl()
     
@@ -27,7 +27,7 @@ class HomeTableViewController: UITableViewController {
         
         numberOfTweets = 20;
         let myUrl = "https://api.twitter.com/1.1/statuses/home_timeline.json"
-        let myParams = ["count":numberOfTweets]
+        let myParams = ["count":20]//numberOfTweets
         TwitterAPICaller.client?.getDictionariesRequest(url: myUrl, parameters: myParams, success:
             { (tweets: [NSDictionary]) in
             
@@ -70,7 +70,6 @@ class HomeTableViewController: UITableViewController {
     }
     
     
-    
     @IBAction func onLogOut(_ sender: Any) {
         TwitterAPICaller.client?.logout()
         self.dismiss(animated: true, completion: nil)
@@ -105,7 +104,7 @@ class HomeTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 5
+        return tweetArray.count
     }
 
    
