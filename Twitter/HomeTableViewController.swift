@@ -27,8 +27,8 @@ class HomeTableViewController: UITableViewController {
         
         numberOfTweets = 20;
         let myUrl = "https://api.twitter.com/1.1/statuses/home_timeline.json"
-        let myParams = ["count":20]//numberOfTweets
-        TwitterAPICaller.client?.getDictionariesRequest(url: myUrl, parameters: myParams, success:
+        let myParams = ["count":numberOfTweets]
+        TwitterAPICaller.client?.getDictionariesRequest(url: myUrl, parameters: myParams as [String : Any], success:
             { (tweets: [NSDictionary]) in
             
             self.tweetArray.removeAll()
@@ -40,6 +40,7 @@ class HomeTableViewController: UITableViewController {
             
         }, failure: { Error in
             print("Could not retreive tweets! oh no!")
+            print(Error.localizedDescription)
         })
     }
     
@@ -47,7 +48,7 @@ class HomeTableViewController: UITableViewController {
         let myUrl="https://api.twitter.com/1.1/statuses/home_timeline.json"
         numberOfTweets = numberOfTweets + 20
         let myParams = ["count":numberOfTweets]
-        TwitterAPICaller.client?.getDictionariesRequest(url: myUrl, parameters: myParams, success:
+        TwitterAPICaller.client?.getDictionariesRequest(url: myUrl, parameters: myParams as [String : Any], success:
             { (tweets: [NSDictionary]) in
             
             self.tweetArray.removeAll()
@@ -83,13 +84,13 @@ class HomeTableViewController: UITableViewController {
         let user = tweetArray[indexPath.row]["user"] as! NSDictionary
         
         cell.userNameLabel.text = user["name"] as? String
-        cell.tweetContent.text = tweetArray[indexPath.row]["tweet"] as? String
+        cell.tweetContent.text = (tweetArray[indexPath.row]["text"] as! String)
         
         let imageUrl = URL(string: (user["profile_image_url_https"] as? String)!)
         let data = try? Data(contentsOf: imageUrl!)
         
         if let imageData=data{
-            cell.profileImage.image = UIImage(data:imageData)
+            cell.profileImage.image = UIImage(data: imageData)
         }
         
         
